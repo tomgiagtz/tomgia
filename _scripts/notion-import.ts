@@ -40,19 +40,23 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
             }
         }
     })
+
+
     for (const r of response.results) {
-        // console.log(r)
+        console.log(Object.keys(r.properties))
         const id = r.id
+        // let fmData = { id, date, title, tags }
         // date
         let date = moment(r.created_time).format("YYYY-MM-DD")
         let pdate = r.properties?.['Date']?.['date']?.['start']
         if (pdate) {
             date = moment(pdate).format('YYYY-MM-DD')
         }
+        console.log(date);
         // title
         let title = id
         let ptitle = r.properties?.['Post']?.['title']
-        console.log(title)
+        // console.log(JSON.parse(r.properties));
         if (ptitle?.length > 0) {
             title = ptitle[0]?.['plain_text']
 
