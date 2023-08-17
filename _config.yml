@@ -119,6 +119,15 @@ pwa:
 
 paginate: 10
 
+# Notion database setup
+notion:
+  fetch_on_watch: true
+  databases:
+    - id: 049a92e48ed8487092ae0f83477a85e6
+
+
+
+
 # ------------ The following options are not recommended to be modified ------------------
 
 kramdown:
