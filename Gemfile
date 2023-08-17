@@ -3,7 +3,6 @@
 source "https://rubygems.org"
 
 gem "jekyll-theme-chirpy", "~> 6.1"
-gem 'jekyll-notion'
 gem 'dotenv'
 
 group :test do

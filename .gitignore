@@ -21,5 +21,8 @@ package-lock.json
 # Misc
 assets/js/dist
 
+# Notion posts are grabbed as part of the build process
+_posts/notion/**
+
 # Environment
 *.env
