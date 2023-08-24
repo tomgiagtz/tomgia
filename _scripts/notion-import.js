@@ -38,11 +38,11 @@ function createFrontMatter(fmData) {
   fm += `tags: ${tags}\n`
   fm += `pin: ${pinned}\n`
   // fm += `img_path: /${img_path}/\n`
-  if (cover_url) {
-    fm += `image:\n`
-    fm += ` path: ${cover_url}\n`
-    fm += ` lqip: ${fmData.cover_lqip}\n`
-  }
+  // if (cover_url) {
+  //   fm += `image:\n`
+  //   fm += ` path: ${cover_url}\n`
+  //   fm += ` lqip: ${fmData.cover_lqip}\n`
+  // }
   fm += '---\n'
   return fm;
 }
@@ -139,9 +139,9 @@ function PostResponseDataFactory(_res) {
     // console.log(`Image downloaded and saved to ${imageDest}`)
     data.cover_url = imageDest
 
-    lqip.base64(path.resolve(data.cover_url)).then(res => {
-      data.cover_lqip = res;
-    });
+    // lqip.base64(path.resolve(data.cover_url)).then(res => {
+    //   data.cover_lqip = res;
+    // });
   }
 
   return data;

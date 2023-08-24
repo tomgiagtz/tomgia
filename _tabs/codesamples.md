@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: category
 title: "Code Samples"
 summary:
 date: 2023-08-16 15:28:30 -0400
