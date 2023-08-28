@@ -1,6 +1,6 @@
 function VideoTransformer(block) {
   // console.log(block)
-  let {type, external} = block.video;
+  let { type, external } = block.video;
   let url = external.url;
   let id;
   if (url.includes('youtube')) {
@@ -8,28 +8,25 @@ function VideoTransformer(block) {
   } else if (url.includes('youtu.be')) {
     id = url.split('/')[1];
   }
-  return `{% include embed/youtube.html id='${id}' %}`
+  return `{% include embed/youtube.html id='${id}' %}`;
 }
 
 //if image is a child of a column block, it will be transformed to a right aligned image
 async function ImageTransformer(block, notion) {
-  let parent = block.parent;
-  console.log(parent)
-  let res = await notion.blocks.retrieve({block_id: parent.block_id});
-  if (res.type == 'column') {
-    let file = block.image;
-    let url;
-    if (file.type == 'external') {
-      url = file.external.url;
-    } else if (file.type == 'file') {
-      url = file.file.url;
-    }
-    let caption = block.image.caption[0].plain_text
-
-
-    return `![${caption}](${url}){: w='400' .50 .right}`
+  // let parent = block.parent;
+  // console.log(parent);
+  // let res = await notion.blocks.retrieve({ block_id: parent.block_id });
+  // if (res.type == 'column') {
+  let file = block.image;
+  let url;
+  if (file.type == 'external') {
+    url = file.external.url;
+  } else if (file.type == 'file') {
+    url = file.file.url;
   }
-  return false;
+  let caption = block.image.caption[0].plain_text;
+
+  return `![${caption}](${url}){: w='400' .50 .right}`;
 }
 
 // async function ColumnTransformer(block, notion) {
@@ -75,4 +72,4 @@ async function ImageTransformer(block, notion) {
 //   // return col;
 // }
 
-module.exports = {VideoTransformer, ImageTransformer}
+module.exports = { VideoTransformer, ImageTransformer };

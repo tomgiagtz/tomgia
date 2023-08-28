@@ -1,18 +1,31 @@
 #  The contact options.
 
+- type: github
+  icon: "fab fa-github"
+  sidebar: true
+
 - type: linkedin
   icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
   url:  'https://linkedin.com/in/tomgia'                  # Fill with your Linkedin homepage
-
-- type: github
-  icon: "fab fa-github"
+  sidebar: true
 
 - type: twitter
   icon: "fab fa-twitter"
+  sidebar: true
+
+- type: artstation
+  icon: "fab fa-artstation"
+  sidebar: true
+
+- type: discord
+  icon: "fab fa-discord"
+  url:  'https://discordapp.com/users/359182044850290688'
+  sidebar: false              # Fill with your Discord invite link
 
 - type: email
   icon: "fas fa-envelope"
   noblank: true # open link in current tab
+  sidebar: true
 
 #- type: rss
 #  icon: "fas fa-rss"

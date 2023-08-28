@@ -1,0 +1,114 @@
+<!-- <div class="card text-center post-preview">
+  <div class="card-body">
+    <div class="row row-cols-3 g-0">
+      <div class="col">
+        <img
+          src="{{ site.url }}{{ site.baseurl }}/assets/img/portrait.png"
+          class="rounded"
+          alt="..."
+        />
+      </div>
+      <div class="col-6">
+        <h1>Tom Giagtzoglou</h1>
+      </div>
+      <div class="col">Column</div>
+      <div class="col-6">Column</div>
+    </div>
+  </div>
+</div> -->
+<style>
+  .rounded-top-left-1 {
+    border-top-left-radius: 0.5rem;
+  }
+
+  .name-header {
+    font-size: 2.5rem;
+    margin-top: 1rem !important;
+  }
+
+  .about-me {
+    border: 0;
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    margin-top: 2rem;
+  }
+
+  .link-icon {
+    font-size: 1.5rem;
+    color: var(--sidebar-btn-color);
+    padding-bottom: 1rem;
+  }
+</style>
+
+<div class="card mb-3 about-me">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img
+        src="{{ site.url }}{{ site.baseurl }}/assets/img/portrait.png"
+        class="img-fluid rounded-top-left-1"
+        alt="..."
+      />
+      <div class="container text-center">
+        <hr />
+        <div class="row row-cols-5 gy-3">
+          {% for entry in site.data.contact %}
+
+          {% case entry.type %}
+            {% when 'github', 'artstation' %}
+              {%- capture url -%}
+                https://{{ entry.type }}.com/{{ site[entry.type].username }}
+              {%- endcapture -%}
+            {% when 'email' %}
+              {% assign email = site.social.email | split: '@' %}
+              {%- capture url -%}
+                javascript:location.href = 'mailto:' + ['{{ email[0] }}','{{ email[1] }}'].join('@')
+              {%- endcapture -%}
+            {% when 'rss' %}
+              {% assign url = '/feed.xml' | relative_url %}
+            {% else %}
+              {% assign url = entry.url %}
+          {% endcase %}
+
+          {% if url %}
+            <a
+              href="{{ url }}"
+              aria-label="{{ entry.type }}"
+              {% assign link_types = '' %}
+
+              {% unless entry.noblank %}
+                target="_blank"
+                {% assign link_types = 'noopener noreferrer' %}
+              {% endunless %}
+
+              {% if entry.type == 'mastodon' %}
+                {% assign link_types = link_types | append: ' me' | strip %}
+              {% endif %}
+
+              {% unless link_types == empty %}
+                rel="{{ link_types }}"
+              {% endunless %}
+            >
+              <i class="{{ entry.icon }} link-icon"></i>
+            </a>
+          {% endif %}
+
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h1 class="card-title name-header">Tom Giagtzoglou</h1>
+        <p class="lead">
+          Tom specializes in bridging the gap between art and technology.
+          Holding a degree in Game Design and Production from Drexel University,
+          he is always learning new tools and techniques to craft digital
+          experiences that cover everything from games to web applications.
+        </p>
+        <!-- <p class="card-text">
+          <small class="text-body-secondary">Last updated 3 mins ago</small>
+        </p> -->
+      </div>
+    </div>
+  </div>
+</div>
