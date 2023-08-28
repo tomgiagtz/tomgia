@@ -1,20 +1,51 @@
-<div class="ratio" style="--bs-aspect-ratio: 96%">
+<style>
+  .download-resume {
+    position: fixed;
+    z-index: 1000;
+  }
+
+  @media screen and (min-width: 601px) {
+    .download-resume {
+      right: 2em;
+      bottom: 2em;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .download-resume {
+      left: 50%;
+      bottom: 8em;
+      transform: translate(-50%, 0);
+      transition: transform 0.4s ease, top 0.2s ease;
+    }
+  }
+</style>
+<div class="ratio" style="--bs-aspect-ratio: 135%">
   <object
-    data="{{ site.url }}{{ site.baseurl }}/assets/resume.pdf#view=FitH&toolbar=0&scrollbar=0"
+    data="{{ site.url }}{{ site.baseurl }}/assets/resume.pdf#view=FitH&toolbar=1"
     type="application/pdf"
     class="rounded-3"
   >
-    <p>
-      Alternative text - include a link
-      <a href="{{ site.url }}{{ site.baseurl }}/assets/resume.pdf"
-        >to the PDF!</a
+    <p class="text-center">
+      <a
+        href="{{ site.url }}{{ site.baseurl }}/assets/resume.pdf#view=FitH&toolbar=1"
+        title="Tom Giagtzoglou's Resume"
+      >
+        Preview not available. Click to download a PDF!</a
       >
     </p>
   </object>
 </div>
 
-<div>
-  <a href="{{ site.url }}{{ site.baseurl }}/assets/resume.pdf">
-    <i class="fa-solid fa-file-arrow-down" style="font-size: 48px; padding:0.25em"></i>
+<div class="download-resume">
+  <a
+    href="{{ site.url }}{{ site.baseurl }}/assets/resume.pdf#view=FitH&toolbar=1"
+    class="btn btn-secondary btn-sm rounded-circle"
+    width="32px"
+  >
+    <i
+      class="fa-solid fa-file-arrow-down"
+      style="font-size: 40px; padding: 0.15em"
+    ></i>
   </a>
 </div>
