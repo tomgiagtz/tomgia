@@ -17,6 +17,7 @@ const { VideoTransformer, ImageTransformer } = require('./transformers');
 const envPath = path.resolve(__dirname, '../.env');
 require('dotenv').config({ path: envPath });
 
+console.log('Testing ENV, Database ID: ', process.env.DATABASE_ID);
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
