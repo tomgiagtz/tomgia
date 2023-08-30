@@ -5,45 +5,39 @@
  I'm adding new parsing for blocks so they align with the way jekyll-theme-chripy works
  ***/
 
-const {Client} = require("@notionhq/client");
-const {NotionToMarkdown} = require("notion-to-md");
+const { Client } = require('@notionhq/client');
+const { NotionToMarkdown } = require('notion-to-md');
 const moment = require('moment');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const lqip = require('lqip');
-const {VideoTransformer, ImageTransformer} = require("./transformers");
+const { VideoTransformer, ImageTransformer } = require('./transformers');
 
 const envPath = path.resolve(__dirname, '../.env');
-require('dotenv').config({path: envPath})
+require('dotenv').config({ path: envPath });
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
 // passing notion client to the option
-const n2m = new NotionToMarkdown({notionClient: notion, config: {}});
+const n2m = new NotionToMarkdown({ notionClient: notion, config: {} });
 
-
-n2m.setCustomTransformer('video', VideoTransformer)
-n2m.setCustomTransformer(`image`, (block) => ImageTransformer(block, notion))
+n2m.setCustomTransformer('video', VideoTransformer);
+n2m.setCustomTransformer(`image`, (block) => ImageTransformer(block, notion));
 
 function createFrontMatter(fmData) {
-  const {id, title, date, tags, pinned, cover_url, img_path} = fmData;
+  const { id, title, date, tags, pinned, category } = fmData;
   // console.log(fmData.cover_lqip)
-  let fm = '---\n'
-  fm += `id: ${id}\n`
-  fm += `title: ${title}\n`
-  fm += `date: ${date}\n`
-  fm += `tags: ${tags}\n`
-  fm += `pin: ${pinned}\n`
-  // fm += `img_path: /${img_path}/\n`
-  // if (cover_url) {
-  //   fm += `image:\n`
-  //   fm += ` path: ${cover_url}\n`
-  //   fm += ` lqip: ${fmData.cover_lqip}\n`
-  // }
-  fm += '---\n'
+  let fm = '---\n';
+  fm += `id: ${id}\n`;
+  fm += `title: ${title}\n`;
+  fm += `date: ${date}\n`;
+  fm += `tags: ${tags}\n`;
+  fm += `category: ${category}\n`;
+  fm += `pin: ${pinned}\n`;
+  fm += '---\n';
   return fm;
 }
 
@@ -55,7 +49,9 @@ async function WriteMdToFile(resData, root) {
   let fm = createFrontMatter(resData);
 
   // writing to file
-  const fileTitle = `${resData.date}-${resData.title.replaceAll(' ', '-').toLowerCase()}.md`
+  const fileTitle = `${resData.date}-${resData.title
+    .replaceAll(' ', '-')
+    .toLowerCase()}.md`;
   fs.writeFile(path.join(root, fileTitle), fm + md, (err) => {
     if (err) {
       console.log(err);
@@ -65,21 +61,20 @@ async function WriteMdToFile(resData, root) {
 
 (async () => {
   // ensure directory exists
-  const root = path.join('_posts', 'notion')
-  clearDirectory(root)
-  fs.mkdirSync(root, {recursive: true})
+  const root = path.join('_posts', 'notion');
+  clearDirectory(root);
+  fs.mkdirSync(root, { recursive: true });
   const databaseId = process.env.DATABASE_ID;
   // TODO has_more
   const response = await notion.databases.query({
     database_id: databaseId,
     filter: {
-      property: "Publish",
+      property: 'Publish',
       checkbox: {
-        equals: true
-      }
-    }
-  })
-
+        equals: true,
+      },
+    },
+  });
 
   for (const r of response.results) {
     if (r.archived) return;
@@ -95,49 +90,59 @@ async function WriteMdToFile(resData, root) {
 function PostResponseDataFactory(_res) {
   let id = _res.id;
 
-  let date = moment(_res.created_time).format("YYYY-MM-DD")
-  if (_res.properties["Date"]) {
-    date = moment(_res.properties["Date"].date.start).format("YYYY-MM-DD")
+  let date = moment(_res.created_time).format('YYYY-MM-DD');
+  if (_res.properties['Date']) {
+    date = moment(_res.properties['Date'].date.start).format('YYYY-MM-DD');
   }
 
-  let title = _res.properties["Title"]?.title[0].plain_text;
+  let title = _res.properties['Title']?.title[0].plain_text;
   // console.log("Title Data: ", _res.properties["Title"])
   // console.log("Title: ", title)
 
-  let tags = []
-  let ptags = _res.properties?.['Tags']?.['multi_select']
+  let tags = [];
+  let ptags = _res.properties?.['Tags']?.['multi_select'];
 
   for (const t of ptags) {
-    const n = t?.['name']
+    const n = t?.['name'];
     if (n) {
-      tags.push(n)
+      tags.push(n);
+    }
+  }
+
+  let categories = [];
+  let pcategories = _res.properties?.['Category']?.['multi_select'];
+
+  for (const t of pcategories) {
+    const n = t?.['name'];
+    if (n) {
+      categories.push(n);
     }
   }
 
   // console.log("Tag Data: ", _res.properties["Tags"])
   // console.log("Tags: ", tags)
 
-  let pinned = _res.properties["Pinned"]?.checkbox;
+  let pinned = _res.properties['Pinned']?.checkbox;
 
   let data = {
     id,
     date,
     title,
-    tags: "[" + tags.toString() + "]",
+    tags: '[' + tags.toString() + ']',
+    category: '[' + categories.toString() + ']',
     pinned,
     cover_url: null,
     cover_lqip: null,
-    img_path: path.join('assets', 'notion', id).replace(/\\/g, "/")
-  }
+    img_path: path.join('assets', 'notion', id).replace(/\\/g, '/'),
+  };
 
   if (_res.cover) {
     let cover = _res.cover;
-    let url = cover.type == "file" ? cover.file.url : cover.external.url;
+    let url = cover.type == 'file' ? cover.file.url : cover.external.url;
 
-
-    let imageDest = downloadCoverImage(id, url)
+    let imageDest = downloadCoverImage(id, url);
     // console.log(`Image downloaded and saved to ${imageDest}`)
-    data.cover_url = imageDest
+    data.cover_url = imageDest;
 
     // lqip.base64(path.resolve(data.cover_url)).then(res => {
     //   data.cover_lqip = res;
@@ -162,11 +167,16 @@ function clearDirectory(directory) {
 
 function downloadCoverImage(_postId, _coverUrl) {
   const fileExtension = getFileExtensionFromUrl(_coverUrl) || '.png'; // Default to .png if no extension found
-  const imageDest = path.join('assets', 'notion', _postId, 'cover' + fileExtension);
+  const imageDest = path.join(
+    'assets',
+    'notion',
+    _postId,
+    'cover' + fileExtension
+  );
   if (fs.existsSync(imageDest)) {
     return imageDest;
   }
-  fs.mkdirSync(path.dirname(imageDest), {recursive: true}); // Ensure the directory exists
+  fs.mkdirSync(path.dirname(imageDest), { recursive: true }); // Ensure the directory exists
 
   downloadImage(_coverUrl, imageDest)
     .then(() => {
@@ -186,18 +196,19 @@ function getFileExtensionFromUrl(url) {
 function downloadImage(url, dest) {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest);
-    https.get(url, (response) => {
-      response.pipe(file);
-      file.on('finish', () => {
-        file.close(resolve);
+    https
+      .get(url, (response) => {
+        response.pipe(file);
+        file.on('finish', () => {
+          file.close(resolve);
+        });
+      })
+      .on('error', (error) => {
+        fs.unlink(dest);
+        reject(error);
       });
-    }).on('error', (error) => {
-      fs.unlink(dest);
-      reject(error);
-    });
   });
 }
-
 
 // interface PostResponseData {
 //   id: number;
@@ -207,8 +218,3 @@ function downloadImage(url, dest) {
 //   publish: boolean;
 //   pinned: boolean;
 // }
-
-
-
-
-

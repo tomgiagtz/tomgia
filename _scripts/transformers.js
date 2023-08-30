@@ -24,9 +24,19 @@ async function ImageTransformer(block, notion) {
   } else if (file.type == 'file') {
     url = file.file.url;
   }
-  let caption = block.image.caption[0].plain_text;
 
-  return `![${caption}](${url}){: w='400' .50 .right}`;
+  let caption = block.image.caption[0]?.plain_text;
+  if (!caption) {
+    return `![](${url}){: w='800' .50}`;
+  }
+
+  if (caption.includes('[r]') || caption.includes('[right]')) {
+    caption = caption.replaceAll('[r]', '').replaceAll('[right]', '');
+    return `![](${url}){: w='400' .50 .right}`;
+  }
+
+  return `![${caption}](${url}){: w='800' .50}
+          _${caption}_`;
 }
 
 // async function ColumnTransformer(block, notion) {
