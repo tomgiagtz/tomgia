@@ -28,10 +28,10 @@ order: 4
     {% assign after_pipe = parts | last %}
     <div class="col">
       <div class="card h-100">
-      <a href="{{ post.permalink }}" class="stretched-link"></a>
+      <a href="{{ post.permalink }}" class="stretched-link" target="_blank"></a>
         <img class="card-img-top post-image" src="{{ thumbnail }}" alt="{{ before_pipe }}" />
         <div class="card-body">
-          <p class="card-title"><a class="streched-link" href="{{ post.permalink }}">{{ before_pipe }}</a></p>
+          <p class="card-title"><a class="streched-link" href="{{ post.permalink }}" target="_blank">{{ before_pipe }}</a></p>
           {% if post.title contains "|" %}
             <div class="card-subtitle ">
               <small class="text-body-secondary">{{ after_pipe }}</small>
