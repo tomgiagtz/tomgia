@@ -1,6 +1,6 @@
 #notion importer
 
-name: Node.js CI
+name: Notion Import
 
 on:
   schedule:
