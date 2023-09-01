@@ -3,13 +3,12 @@ on:
   push:
     branches:
       - main
-      - master
     paths-ignore:
       - .gitignore
       - README.md
       - LICENSE
-  # schedule:
-  #   - cron: "0 */1 * * *"
+  schedule:
+    - cron: "0 */1 * * *"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -41,17 +40,17 @@ jobs:
         id: pages
         uses: actions/configure-pages@v3
 
-      # - name: Setup Node
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: "17"
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "17"
 
-      # - run: npm install
+      - run: npm install
 
-      # - run: npm run import
-      #   env:
-      #     NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-      #     DATABASE_ID: ${{ secrets.DATABASE_ID }}
+      - run: npm run import
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          DATABASE_ID: ${{ secrets.DATABASE_ID }}
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
