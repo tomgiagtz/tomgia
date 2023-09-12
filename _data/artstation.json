@@ -1,6 +1,38 @@
 {
   "data": [
       {
+          "id": 16587558,
+          "user_id": 1761702,
+          "title": "Character Switching HUD | The Odessa Tree",
+          "description": "The Odessa Tree is a 3D puzzle platformer where you control three vessels that are controlled by a single soul. As you explore an abandoned village, you must switch between the vessel characters, and use their light-based abilities to traverse the environment. \n\nEarly on, we wanted each character to be bound to the X, Y, and B buttons on an Xbox controller. The HUD was built to reflect the layout of those buttons. \n\nEach character's ability is based on whether or not they are standing in light. The mushroom's ability is active in darkness, while the robot and plant's abilities are active in light. This was confusing to some players, so the ability indicator shows when an ability is available.\n\nThis HUD and the entire UI were built using CommonUI in Unreal. Using it, I was able to integrate controller UI navigation and input device icons, which change with the active input device.\n\nThe HUD icons were created by @maurasolis (https://www.artstation.com/maurasolis).\n\nNOTE: The HUD size and placement was changed for these recordings.",
+          "created_at": "2023-09-12T14:55:29.095-05:00",
+          "updated_at": "2023-09-12T14:55:53.976-05:00",
+          "likes_count": 0,
+          "slug": "character-switching-hud-the-odessa-tree",
+          "published_at": "2023-09-12T14:55:29.080-05:00",
+          "adult_content": false,
+          "cover_asset_id": 67101066,
+          "admin_adult_content": false,
+          "hash_id": "PXBvd8",
+          "permalink": "https://www.artstation.com/artwork/PXBvd8",
+          "hide_as_adult": false,
+          "cover": {
+              "id": 67101066,
+              "small_square_url": "https://cdna.artstation.com/p/assets/video_clips/images/067/101/066/small_square/tom-giagtzoglou-thumb.jpg?1694545709",
+              "micro_square_image_url": "https://cdna.artstation.com/p/assets/video_clips/images/067/101/066/micro_square/tom-giagtzoglou-thumb.jpg?1694545709",
+              "thumb_url": "https://cdna.artstation.com/p/assets/video_clips/images/067/101/066/smaller_square/tom-giagtzoglou-thumb.jpg?1694545709"
+          },
+          "icons": {
+              "image": false,
+              "video": false,
+              "video_clip": true,
+              "model3d": false,
+              "marmoset": false,
+              "pano": false
+          },
+          "assets_count": 4
+      },
+      {
           "id": 15946690,
           "user_id": 1761702,
           "title": "News Ticker | Trouble In Tornado Town",
@@ -321,5 +353,5 @@
           "assets_count": 2
       }
   ],
-  "total_count": 10
+  "total_count": 11
 }
