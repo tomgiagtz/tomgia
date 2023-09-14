@@ -59,7 +59,7 @@ jobs:
           bundler-cache: true
 
       - name: Clean site
-        run: bundle exec jekyll clean"
+        run: bundle exec jekyll clean
         env:
           JEKYLL_ENV: "production"
 
