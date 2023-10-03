@@ -17,26 +17,56 @@ async function ImageTransformer(block, notion) {
   // console.log(parent);
   // let res = await notion.blocks.retrieve({ block_id: parent.block_id });
   // if (res.type == 'column') {
-  let file = block.image;
-  let url;
-  if (file.type == 'external') {
-    url = file.external.url;
-  } else if (file.type == 'file') {
-    url = file.file.url;
-  }
+
+  let path = await DownloadImage(block);
 
   let caption = block.image.caption[0]?.plain_text;
   if (!caption) {
-    return `![](${url}){: w='800' .50}`;
+    return `![](${path}){: w='800' .50}`;
   }
 
   if (caption.includes('[r]') || caption.includes('[right]')) {
     caption = caption.replaceAll('[r]', '').replaceAll('[right]', '');
-    return `![](${url}){: w='400' .50 .right}`;
+    return `![](${path}){: w='400' .50 .right}`;
   }
 
-  return `![${caption}](${url}){: w='800' .50}
-          _${caption}_`;
+  return `![${caption}](${[path]}){: w='800' .50}\n_${caption}_`;
+}
+
+async function DownloadImage(block) {
+
+  // parse notion blockl for url
+  let notionFile = block.image;
+  let url;
+  if (notionFile.type == 'external') {
+    url = notionFile.external.url;
+  } else if (notionFile.type == 'file') {
+    url = notionFile.file.url;
+  }
+
+  const blockId = block.id;
+  const parentId = block.parent.page_id;
+
+  const https = require('https');
+  const fs = require('fs');
+  const path = require('path');
+  const imageExtension = path.extname(url).split('?')[0];
+  let filename = blockId + imageExtension;
+  let assetPath = path.join(__dirname, '../assets/notion', parentId, filename);
+
+  // skip if file already exists
+  if (fs.existsSync(assetPath)) {
+    return filename;
+  }
+
+  fs.mkdirSync(path.dirname(assetPath), { recursive: true });
+
+  const file = fs.createWriteStream(assetPath);
+  const request = https.get(url, function (response) {
+    response.pipe(file);
+  });
+
+  return filename;
 }
 
 // async function ColumnTransformer(block, notion) {

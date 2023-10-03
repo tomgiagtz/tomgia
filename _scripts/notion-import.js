@@ -37,15 +37,15 @@ function createFrontMatter(fmData) {
   fm += `tags: ${tags}\n`;
   fm += `category: ${category}\n`;
   fm += `pin: ${pinned}\n`;
+  fm += `img_path: ${fmData.img_path}\n`;
   fm += '---\n';
   return fm;
 }
 
 async function WriteMdToFile(resData, root) {
   const mdblocks = await n2m.pageToMarkdown(resData.id);
-  // console.log("All Blocks:" + mdblocks.map(b => b.type))
+
   const md = n2m.toMarkdownString(mdblocks).parent;
-  // console.log(md)
   let fm = createFrontMatter(resData);
 
   // writing to file
@@ -133,7 +133,7 @@ function PostResponseDataFactory(_res) {
     pinned,
     cover_url: null,
     cover_lqip: null,
-    img_path: path.join('assets', 'notion', id).replace(/\\/g, '/'),
+    img_path: '/' + path.join('assets', 'notion', id).replace(/\\/g, '/') + '/',
   };
 
   if (_res.cover) {
