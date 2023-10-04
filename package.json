@@ -8,6 +8,7 @@
   },
   "scripts": {
     "import": "node _scripts/notion-import.js",
-    "jekyll": "bundle exec dotenv jekyll s --livereload"
+    "jekyll": "bundle exec dotenv jekyll s --livereload",
+    "build": "bundle exec jekyll build JEKYLL_ENV=production -d /docs"
   }
 }
